@@ -1,14 +1,19 @@
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class AskSystem {
     private final Scanner scan;
+    private UsersManager usersManager = new UsersManager();
 
 
-    public AskSystem() {
+    /** A non-parametrized constructor in which the database is loaded*/
+    public AskSystem() throws FileNotFoundException {
         scan = new Scanner(System.in);
+        usersManager.loadDatabase();
     }
 
-    public void run() {
+    public void run() throws IOException {
         while (true) {
             int mainChoice = mainMenu();
             if (mainChoice == 1) {
@@ -41,7 +46,7 @@ public class AskSystem {
                 }
             }
             else if (mainChoice == 2) {
-                System.out.println("You signed up");
+                usersManager.signUp();
             }
             else {
                 break;
