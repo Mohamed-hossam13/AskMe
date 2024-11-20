@@ -17,33 +17,30 @@ public class AskSystem {
         while (true) {
             int mainChoice = mainMenu();
             if (mainChoice == 1) {
-                while (true) {
-                    int subChoice = subMenu();
-                    if (subChoice == 1) {
-                        System.out.println("choice 1");
-                    }
-                    else if (subChoice == 2) {
-                        System.out.println("choice 2");
-                    }
-                    else if (subChoice == 3) {
-                        System.out.println("choice 3");
-                    }
-                    else if (subChoice == 4) {
-                        System.out.println("choice 4");
-                    }
-                    else if (subChoice == 5) {
-                        System.out.println("choice 5");
-                    }
-                    else if (subChoice == 6) {
-                        System.out.println("choice 6");
-                    }
-                    else if (subChoice == 7) {
-                        System.out.println("choice 7");
-                    }
-                    else {
-                        break;
+                if (usersManager.login()) {
+                    while (true) {
+                        int subChoice = subMenu();
+                        if (subChoice == 1) {
+                            System.out.println("choice 1");
+                        } else if (subChoice == 2) {
+                            System.out.println("choice 2");
+                        } else if (subChoice == 3) {
+                            System.out.println("choice 3");
+                        } else if (subChoice == 4) {
+                            System.out.println("choice 4");
+                        } else if (subChoice == 5) {
+                            System.out.println("choice 5");
+                        } else if (subChoice == 6) {
+                            System.out.println("choice 6");
+                        } else if (subChoice == 7) {
+                            System.out.println("choice 7");
+                        } else {
+                            break;
+                        }
                     }
                 }
+                else
+                    System.out.println("User is not found...Try again.");
             }
             else if (mainChoice == 2) {
                 usersManager.signUp();

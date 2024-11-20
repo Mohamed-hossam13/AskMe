@@ -19,10 +19,10 @@ public class User {
         ArrayList<String> userData = FileHandler.splitLine(line, ",");
         assert(userData.size() != 6);
         userId = Integer.parseInt(userData.getFirst());
-        name = userData.get(1);
-        email = userData.get(2);
-        password = userData.get(3);
-        userName = userData.get(4);
+        userName = userData.get(1);
+        password = userData.get(2);
+        name = userData.get(3);
+        email = userData.get(4);
         allowAnonymousQuestions = Integer.parseInt(userData.getLast());
     }
 
@@ -59,7 +59,6 @@ public class User {
                 + getName() + delimiter
                 + getEmail() + delimiter
                 + Integer.toString(getAllowAnonymousQuestions());
-
         return line;
     }
 }

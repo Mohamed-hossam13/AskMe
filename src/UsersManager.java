@@ -13,6 +13,20 @@ public class UsersManager {
     private int lastUserID;
     private User currentUser;
 
+
+    /** A method to check if the user logged-in to the system is found or not*/
+    private boolean isFoundUser(String username, String password) {
+        User user = new User();
+        boolean found = false;
+        if (usernameToUserObject.containsKey(username)) {
+            user = usernameToUserObject.get(username);
+            if (user.getPassword().equals(password)) {
+                found = true;
+            }
+        }
+        return found;
+    }
+
     public UsersManager() {
         usernameToUserObject = new HashMap<>();
         currentUser = new User();
@@ -54,13 +68,10 @@ public class UsersManager {
         while (true) {
             System.out.print("Enter username without spaces: ");
             username = scan.next();
-            if(!usernameToUserObject.containsKey(username)) {
-                currentUser.setUserName(username);
-                break;
-            }
-            else {
+            if(usernameToUserObject.containsKey(username))
                 System.out.println("Already used. Try again");
-            }
+            else
+                break;
         }
         System.out.print("Enter password: ");
         password = scan.next();
@@ -73,6 +84,7 @@ public class UsersManager {
         userID = ++lastUserID;
 
         currentUser.setUserId(userID);
+        currentUser.setUserName(username);
         currentUser.setPassword(password);
         currentUser.setName(name);
         currentUser.setEmail(email);
@@ -81,6 +93,18 @@ public class UsersManager {
         usernameToUserObject.put(username, currentUser);
         updateDatabase(currentUser);
     }
+
+    public boolean login() {
+        Scanner scan = new Scanner(System.in);
+        String username, password;
+        System.out.print("Enter username: ");
+        username = scan.next();
+        System.out.print("Enter password: ");
+        password = scan.next();
+        return isFoundUser(username, password);
+    }
+
+
 
     /** A method to update the database with the new added user to the file */
     public void updateDatabase(User user) throws IOException {
