@@ -31,7 +31,7 @@ public class AskSystem {
                         } else if (subChoice == 5) {
                             System.out.println("choice 5");
                         } else if (subChoice == 6) {
-                            System.out.println("choice 6");
+                            usersManager.listSystemUsers();
                         } else if (subChoice == 7) {
                             System.out.println("choice 7");
                         } else {

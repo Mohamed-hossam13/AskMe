@@ -61,4 +61,9 @@ public class User {
                 + Integer.toString(getAllowAnonymousQuestions());
         return line;
     }
+
+    /** A method to print a single user's info */
+    public void printUser() {
+        System.out.println("ID:  " + getUserId() + "\t\t" + "Name:  " + getName());
+    }
 }

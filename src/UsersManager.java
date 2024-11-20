@@ -94,6 +94,7 @@ public class UsersManager {
         updateDatabase(currentUser);
     }
 
+    /** A method to do the log-in choice to make user enter to the system */
     public boolean login() {
         Scanner scan = new Scanner(System.in);
         String username, password;
@@ -105,6 +106,11 @@ public class UsersManager {
     }
 
 
+    /** A method to list all the users in the system */
+    public void listSystemUsers() {
+        for (User user : usernameToUserObject.values())
+            user.printUser();
+    }
 
     /** A method to update the database with the new added user to the file */
     public void updateDatabase(User user) throws IOException {
