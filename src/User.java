@@ -6,11 +6,18 @@ public class User {
     private String email;
     private String password;
     private String userName;
-    private int allowAnonymousQuestions; /** means that the user allow other user to ask him without knowing his ID */
+    private int allowAnonymousQuestions; // means that the user allows other users to ask him without knowing his ID
+
+    // Two lists, one that contains all the IDs of the questions the user asked to others
+    // The other that contains all the IDs of the questions sent to me
+    private ArrayList<Integer> questionsIdsFromMe;
+    private ArrayList<Integer> questionsIdsToMe;
 
     public User() {
         userId = -1;
         allowAnonymousQuestions = -1;
+        questionsIdsFromMe = new ArrayList<>();
+        questionsIdsToMe = new ArrayList<>();
     }
 
     /** A parametrized constructor that takes a line containing all the data for a user
@@ -24,6 +31,8 @@ public class User {
         name = userData.get(3);
         email = userData.get(4);
         allowAnonymousQuestions = Integer.parseInt(userData.getLast());
+        questionsIdsFromMe = new ArrayList<>();
+        questionsIdsToMe = new ArrayList<>();
     }
 
     public int getUserId() { return userId; }
@@ -38,6 +47,10 @@ public class User {
 
     public int getAllowAnonymousQuestions() { return allowAnonymousQuestions; }
 
+    public ArrayList<Integer> getQuestionsIdsFromMe() { return questionsIdsFromMe; }
+
+    public ArrayList<Integer> getQuestionsIdsToMe() { return questionsIdsToMe; }
+
     public void setUserId(int userId) { this.userId = userId; }
 
     public void setName(String name) { this.name = name; }
@@ -50,15 +63,19 @@ public class User {
 
     public void setAllowAnonymousQuestions(int allowAnonymousQuestions) { this.allowAnonymousQuestions = allowAnonymousQuestions; }
 
+    public void setQuestionsIdsFromMe(ArrayList<Integer> questionsIdsFromMe) { this.questionsIdsFromMe = questionsIdsFromMe; }
+
+    public void setQuestionsIdsToMe(ArrayList<Integer> questionsIdsToMe) { this.questionsIdsToMe = questionsIdsToMe; }
+
     public String toString() {
-        String line = "";
+        String line;
         String delimiter = ",";
-        line = Integer.toString(getUserId()) + delimiter
-                + getUserName() + delimiter
-                + getPassword() + delimiter
-                + getName() + delimiter
-                + getEmail() + delimiter
-                + Integer.toString(getAllowAnonymousQuestions());
+        line = getUserId() + delimiter
+             + getUserName() + delimiter
+             + getPassword() + delimiter
+             + getName() + delimiter
+             + getEmail() + delimiter
+             + getAllowAnonymousQuestions();
         return line;
     }
 

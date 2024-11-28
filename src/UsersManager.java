@@ -8,24 +8,11 @@ import java.util.Scanner;
 /** A userManager class to handle the functionalities of the user
  * We have a map usernameToUserObject to make sure that every username is a unique one */
 public class UsersManager {
-    private Map<String, User> usernameToUserObject;
+    private final Map<String, User> usernameToUserObject;
     private final String path;
     private int lastUserID;
-    private User currentUser;
-
-
-    /** A method to check if the user logged-in to the system is found or not*/
-    private boolean isFoundUser(String username, String password) {
-        User user = new User();
-        boolean found = false;
-        if (usernameToUserObject.containsKey(username)) {
-            user = usernameToUserObject.get(username);
-            if (user.getPassword().equals(password)) {
-                found = true;
-            }
-        }
-        return found;
-    }
+    public User currentUser;
+    
 
     public UsersManager() {
         usernameToUserObject = new HashMap<>();
@@ -42,18 +29,13 @@ public class UsersManager {
      * to give it to the next added user to the system */
     public void loadDatabase() throws FileNotFoundException {
         lastUserID = 0;
-        ArrayList<String> lines = new ArrayList<>();
+        ArrayList<String> lines;
         lines = FileHandler.readFileLines(path);
         for (String line : lines) {
             User user = new User(line);
             usernameToUserObject.put(user.getUserName(), user);
             lastUserID = Math.max(lastUserID, user.getUserId());
         }
-    }
-
-    /** A method to return the ID for the last user in the system */
-    public int getLastUserID() {
-        return lastUserID;
     }
 
     /** A method to do the sign-up choice to add a new user to the system
@@ -94,15 +76,30 @@ public class UsersManager {
         updateDatabase(currentUser);
     }
 
-    /** A method to do the log-in choice to make user enter to the system */
-    public boolean login() {
+    /** A method to do the log-in choice to make user enter to the system
+     * We will ask the user to enter his username and password, and we will check their correctness
+     * So we will check if the username exits first, then checking if the password is correct */
+    public void login() {
         Scanner scan = new Scanner(System.in);
         String username, password;
-        System.out.print("Enter username: ");
-        username = scan.next();
-        System.out.print("Enter password: ");
-        password = scan.next();
-        return isFoundUser(username, password);
+        while (true) {
+            System.out.print("Enter username: ");
+            username = scan.next();
+            System.out.print("Enter password: ");
+            password = scan.next();
+
+            if (!usernameToUserObject.containsKey(username)) {
+                System.out.println("\nInvalid username or password. Try again.\n\n");
+                continue;
+            }
+            User user = usernameToUserObject.get(username);
+            if (!user.getPassword().equals(password)) {
+                System.out.println("\nInvalid username or password. Try again\n\n");
+                continue;
+            }
+            currentUser = user;
+            break;
+        }
     }
 
 

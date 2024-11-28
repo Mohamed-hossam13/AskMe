@@ -4,43 +4,52 @@ import java.util.Scanner;
 
 public class AskSystem {
     private final Scanner scan;
-    private UsersManager usersManager = new UsersManager();
+    private UsersManager usersManager;
+    private QuestionsManager questionsManager;
 
 
-    /** A non-parametrized constructor in which the database is loaded*/
     public AskSystem() throws FileNotFoundException {
         scan = new Scanner(System.in);
+        usersManager = new UsersManager();
+        questionsManager = new QuestionsManager();
+    }
+
+    /** A method in which the database of the system is loaded
+     * And we'll wait till a user do log-in to fill all the questions */
+    public void loadDatabase(boolean loginUser) throws FileNotFoundException {
         usersManager.loadDatabase();
+        questionsManager.loadDatabase();
+        if (loginUser)
+            questionsManager.fillUserQuestionFromAndTo(usersManager.currentUser);
     }
 
     public void run() throws IOException {
+        loadDatabase(false);
         while (true) {
             int mainChoice = mainMenu();
             if (mainChoice == 1) {
-                if (usersManager.login()) {
-                    while (true) {
-                        int subChoice = subMenu();
-                        if (subChoice == 1) {
-                            System.out.println("choice 1");
-                        } else if (subChoice == 2) {
-                            System.out.println("choice 2");
-                        } else if (subChoice == 3) {
-                            System.out.println("choice 3");
-                        } else if (subChoice == 4) {
-                            System.out.println("choice 4");
-                        } else if (subChoice == 5) {
-                            System.out.println("choice 5");
-                        } else if (subChoice == 6) {
-                            usersManager.listSystemUsers();
-                        } else if (subChoice == 7) {
-                            System.out.println("choice 7");
-                        } else {
-                            break;
-                        }
+                usersManager.login();
+                while (true) {
+                    loadDatabase(true);
+                    int subChoice = subMenu();
+                    if (subChoice == 1) {
+                        questionsManager.printQuestionsToMe(usersManager.currentUser);
+                    } else if (subChoice == 2) {
+                        System.out.println("choice 2");
+                    } else if (subChoice == 3) {
+                        System.out.println("choice 3");
+                    } else if (subChoice == 4) {
+                        System.out.println("choice 4");
+                    } else if (subChoice == 5) {
+                        System.out.println("choice 5");
+                    } else if (subChoice == 6) {
+                        usersManager.listSystemUsers();
+                    } else if (subChoice == 7) {
+                        System.out.println("choice 7");
+                    } else {
+                        break;
                     }
                 }
-                else
-                    System.out.println("User is not found...Try again.");
             }
             else if (mainChoice == 2) {
                 usersManager.signUp();
