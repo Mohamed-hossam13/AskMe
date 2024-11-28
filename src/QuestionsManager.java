@@ -58,4 +58,18 @@ public class QuestionsManager {
         }
         System.out.println();
     }
+
+    /** A method to print all questions the user sent to others */
+    public void printQuestionsFromMe(User user) {
+        ArrayList<Integer> questionID = user.getQuestionsIdsFromMe();
+        if (questionID.isEmpty()) {
+            System.out.println("No Questions");
+            return;
+        }
+        for (int id : questionID) {
+            Question question = quesIdToQuesObject.get(id);
+            question.printQuestionFrom();
+        }
+        System.out.println();
+    }
 }

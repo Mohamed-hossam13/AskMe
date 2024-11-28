@@ -67,9 +67,11 @@ public class Question {
     /** A method to print the questions sent to me by others */
     public void printQuestionTo() {
         System.out.print("Question Id (" + getQuestionId() + ") from User Id (" + getFromUserId() + ")");
-        System.out.print("\tQuestion: " + getQuestionText());
+        System.out.print("\t\tQuestion: " + getQuestionText());
         if (!getAnswerText().isEmpty())
-            System.out.println("\tAnswer: " + getAnswerText());
+            System.out.println("\t\tAnswer: " + getAnswerText());
+        else
+            System.out.println("\t\tNot Answered Yet");
     }
 
     /** A method to print the question and its answer asked by me to another user
@@ -85,7 +87,8 @@ public class Question {
 
         if (getAnswerText().isEmpty())
             System.out.println("\tNot Answered Yet");
-        System.out.println("\tAnswer: " + getAnswerText());
+        else
+            System.out.println("\tAnswer: " + getAnswerText());
     }
 }
 
