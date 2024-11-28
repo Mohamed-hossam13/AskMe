@@ -18,10 +18,11 @@ public class FileHandler {
     }
 
     /** A method to write new lines into the file */
-    public static void writeFileLines(String path, String line) throws IOException {
-        FileWriter fileWriter = new FileWriter(path, true);
+    public static void writeFileLines(String path, ArrayList<String> lines, boolean append) throws IOException {
+        FileWriter fileWriter = new FileWriter(path, append);
         PrintWriter writer = new PrintWriter(fileWriter);
-        writer.println(line);
+        for (String line : lines)
+            writer.println(line);
         fileWriter.close();
     }
 
