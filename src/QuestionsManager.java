@@ -1,7 +1,9 @@
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 /** A questionManager class to handle the functionalities of the Questions in the system
  * The class also will add the IDs of the questions from and to specific user*/
@@ -71,5 +73,49 @@ public class QuestionsManager {
             question.printQuestionFrom();
         }
         System.out.println();
+    }
+
+    /** A method to answer a question asked to the user
+     * First, we will ask the user to enter the question id,
+     * and we'll check if the id is already in the system
+     * Then, we'll ask the user to enter his answer
+     * And finally, we'll update the system with the new answer */
+    public void AnswerQuestion() throws IOException {
+        Scanner scan = new Scanner(System.in);
+        int id;
+        while (true) {
+            System.out.print("Enter Question Id or -1 to cancel: ");
+            id = scan.nextInt();
+
+            // Consume the leftover newline character
+            scan.nextLine();
+
+            if (id == -1)
+                return;
+            else if (!quesIdToQuesObject.containsKey(id))
+                System.out.println("Id isn't found. Try again...");
+            else
+                break;
+        }
+        Question question = quesIdToQuesObject.get(id);
+        question.printQuestionTo();
+
+        if (!question.getAnswerText().isEmpty())
+            System.out.println("Warning: Already answered. Answer will be updated.");
+
+
+        String answer;
+        System.out.print("Enter question answer: ");
+        answer = scan.nextLine();
+        question.setAnswerText(answer);
+        updateDatabase();
+    }
+
+    /** A method to update the file with the new changes */
+    private void updateDatabase() throws IOException {
+        ArrayList<String> lines = new ArrayList<>();
+        for (Question question : quesIdToQuesObject.values())
+            lines.add(question.toString());
+        FileHandler.writeFileLines(path, lines, false);
     }
 }

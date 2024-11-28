@@ -110,9 +110,11 @@ public class UsersManager {
     }
 
     /** A method to update the database with the new added user to the file */
-    public void updateDatabase(User user) throws IOException {
+    private void updateDatabase(User user) throws IOException {
         String line = user.toString();
-        FileHandler.writeFileLines(path, line);
+        ArrayList<String> lines = new ArrayList<>();
+        lines.add(line);
+        FileHandler.writeFileLines(path, lines, true);
     }
 
 }

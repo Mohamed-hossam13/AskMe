@@ -37,7 +37,7 @@ public class AskSystem {
                     } else if (subChoice == 2) {
                         questionsManager.printQuestionsFromMe(usersManager.currentUser);
                     } else if (subChoice == 3) {
-                        System.out.println("choice 3");
+                        questionsManager.AnswerQuestion();
                     } else if (subChoice == 4) {
                         System.out.println("choice 4");
                     } else if (subChoice == 5) {

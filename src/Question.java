@@ -35,6 +35,10 @@ public class Question {
         answerText = questionData.get(6);
     }
 
+    public void setAnswerText(String answerText) {
+        this.answerText = answerText;
+    }
+
     public int getQuestionId() { return questionId; }
 
     public int getParentQuestionId() { return parentQuestionId; }
