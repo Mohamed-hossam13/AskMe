@@ -115,6 +115,53 @@ public class QuestionsManager {
         updateDatabase();
     }
 
+
+    /** A helper method to update the user's list of the ids to him
+     * and also update the map quesIdToQuesObject */
+    private void toDelete(int id, User user) {
+        Map<Integer, Question> temp1 = new HashMap<>();
+        ArrayList<Integer> temp2 = new ArrayList<>();
+        for (Integer i : quesIdToQuesObject.keySet()) {
+            if (i != id)
+                temp1.put(i, quesIdToQuesObject.get(i));
+        }
+        quesIdToQuesObject = temp1;
+        for (Integer i : user.getQuestionsIdsToMe()) {
+            if (i != id)
+                temp2.add(i);
+        }
+        user.setQuestionsIdsToMe(temp2);
+    }
+    /** A method to delete the question sent to me and its answer
+     * We will ask the user to enter the question id to delete,
+     * and we'll check if the id exists.
+     * Then, we will call the helper method toDelete() to update the lists
+     * containing the questions in the system */
+    public void DeleteQuestion(User user) throws IOException {
+        ArrayList<Integer> askedToMe = user.getQuestionsIdsToMe();
+
+        Scanner scan = new Scanner(System.in);
+        int id;
+        while (true) {
+            System.out.print("Enter Question Id or -1 to cancel: ");
+            id = scan.nextInt();
+
+            // Consume the leftover newline character
+            scan.nextLine();
+
+            if (id == -1)
+                return;
+            else if (!quesIdToQuesObject.containsKey(id))
+                System.out.println("Id isn't found. Try again...");
+            else if (!askedToMe.contains(id))
+                System.out.println("You don't have this Id. Try again...");
+            else
+                break;
+        }
+        toDelete(id, user);
+        updateDatabase();
+    }
+
     /** A method to update the file with the new changes */
     private void updateDatabase() throws IOException {
         ArrayList<String> lines = new ArrayList<>();
