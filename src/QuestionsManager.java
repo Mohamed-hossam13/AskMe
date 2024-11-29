@@ -80,7 +80,9 @@ public class QuestionsManager {
      * and we'll check if the id is already in the system
      * Then, we'll ask the user to enter his answer
      * And finally, we'll update the system with the new answer */
-    public void AnswerQuestion() throws IOException {
+    public void AnswerQuestion(User user) throws IOException {
+        ArrayList<Integer> askedToMe = user.getQuestionsIdsToMe();
+
         Scanner scan = new Scanner(System.in);
         int id;
         while (true) {
@@ -94,6 +96,8 @@ public class QuestionsManager {
                 return;
             else if (!quesIdToQuesObject.containsKey(id))
                 System.out.println("Id isn't found. Try again...");
+            else if (!askedToMe.contains(id))
+                System.out.println("You don't have this Id. Try again...");
             else
                 break;
         }
