@@ -41,7 +41,7 @@ public class AskSystem {
                     } else if (subChoice == 4) {
                         questionsManager.DeleteQuestion(usersManager.currentUser);
                     } else if (subChoice == 5) {
-                        System.out.println("choice 5");
+                        questionsManager.AskQuestion(usersManager, usersManager.currentUser);
                     } else if (subChoice == 6) {
                         usersManager.listSystemUsers();
                     } else if (subChoice == 7) {

@@ -82,7 +82,7 @@ public class QuestionsManager {
      * And finally, we'll update the system with the new answer */
     public void AnswerQuestion(User user) throws IOException {
         ArrayList<Integer> askedToMe = user.getQuestionsIdsToMe();
-        int id = checkUserID(askedToMe);
+        int id = checkQuestionID(askedToMe);
 
         if (id == -1)
             return;
@@ -125,7 +125,7 @@ public class QuestionsManager {
      * containing the questions in the system */
     public void DeleteQuestion(User user) throws IOException {
         ArrayList<Integer> askedToMe = user.getQuestionsIdsToMe();
-        int id = checkUserID(askedToMe);
+        int id = checkQuestionID(askedToMe);
 
         if (id == -1)
             return;
@@ -137,13 +137,55 @@ public class QuestionsManager {
     /** A method to ask a question to a user in the system
      * First, we ask the user to enter the id of the user he wants to ask
      * and check if the user exists or not */
-    public void AskQuestion() {
-        //todo:
+    public void AskQuestion(UsersManager manager, User fromUser) throws IOException {
+        Scanner scan = new Scanner(System.in);
+        int id;
+        User toUser;
+        while (true) {
+            System.out.print("Enter User Id or -1 to cancel: ");
+            id = scan.nextInt();
+
+            // Consume the leftover newline character
+            scan.nextLine();
+
+            toUser = manager.checkUserId(id);
+
+            if (id == -1)
+                return;
+            else if (toUser == null)
+                System.out.println("User is not found. Try again...");
+            else
+                break;
+        }
+        int isAnonQues;
+        if (toUser.getAllowAnonymousQuestions() == 0) {
+            System.out.println("Note: Anonymous questions are not allowed for this user");
+            isAnonQues = 0;
+        }
+        else {
+            isAnonQues = 1;
+        }
+
+        String questionText;
+        System.out.print("Enter question text: ");
+        questionText = scan.nextLine();
+
+        Question newQuestion = new Question();
+        newQuestion.setQuestionId(++lastQuestionID);
+        newQuestion.setParentQuestionId(-1);
+        newQuestion.setFromUserId(fromUser.getUserId());
+        newQuestion.setToUserId(toUser.getUserId());
+        newQuestion.setIsAnonymousQuestion(isAnonQues);
+        newQuestion.setQuestionText(questionText);
+        newQuestion.setAnswerText("");
+
+        quesIdToQuesObject.put(newQuestion.getQuestionId(), newQuestion);
+        updateDatabase();
     }
 
     /** A helper method to request an id from the user and check if it exists
      * and return it */
-    private int checkUserID(ArrayList<Integer> IdList) {
+    private int checkQuestionID(ArrayList<Integer> IdList) {
         Scanner scan = new Scanner(System.in);
         int id;
         while (true) {

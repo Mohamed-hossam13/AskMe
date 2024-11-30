@@ -21,6 +21,16 @@ public class UsersManager {
         lastUserID = 0;
     }
 
+    /** A helper method to check when asking a question to a user in the system if the user exists or not
+     * And if the user exists, we return the user info */
+    public User checkUserId(int id) {
+        for (User user : usernameToUserObject.values()) {
+            if (user.getUserId() == id)
+                return user;
+        }
+        return null;
+    }
+
     /** A method to read all the users from the file and add them
      * to the ArrayList (lines) to start dealing with them.
      * And also we will split every single user-data separately

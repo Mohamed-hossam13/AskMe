@@ -35,6 +35,18 @@ public class Question {
         answerText = questionData.get(6);
     }
 
+    public void setQuestionId(int questionId) { this.questionId = questionId; }
+
+    public void setParentQuestionId(int parentQuestionId) { this.parentQuestionId = parentQuestionId; }
+
+    public void setFromUserId(int fromUserId) { this.fromUserId = fromUserId; }
+
+    public void setToUserId(int toUserId) { this.toUserId = toUserId; }
+
+    public void setIsAnonymousQuestion(int isAnonymousQuestion) { this.isAnonymousQuestion = isAnonymousQuestion; }
+
+    public void setQuestionText(String questionText) { this.questionText = questionText; }
+
     public void setAnswerText(String answerText) {
         this.answerText = answerText;
     }
