@@ -82,32 +82,18 @@ public class QuestionsManager {
      * And finally, we'll update the system with the new answer */
     public void AnswerQuestion(User user) throws IOException {
         ArrayList<Integer> askedToMe = user.getQuestionsIdsToMe();
+        int id = checkUserID(askedToMe);
 
-        Scanner scan = new Scanner(System.in);
-        int id;
-        while (true) {
-            System.out.print("Enter Question Id or -1 to cancel: ");
-            id = scan.nextInt();
+        if (id == -1)
+            return;
 
-            // Consume the leftover newline character
-            scan.nextLine();
-
-            if (id == -1)
-                return;
-            else if (!quesIdToQuesObject.containsKey(id))
-                System.out.println("Id isn't found. Try again...");
-            else if (!askedToMe.contains(id))
-                System.out.println("You don't have this Id. Try again...");
-            else
-                break;
-        }
         Question question = quesIdToQuesObject.get(id);
         question.printQuestionTo();
 
         if (!question.getAnswerText().isEmpty())
             System.out.println("Warning: Already answered. Answer will be updated.");
 
-
+        Scanner scan = new Scanner(System.in);
         String answer;
         System.out.print("Enter question answer: ");
         answer = scan.nextLine();
@@ -139,7 +125,25 @@ public class QuestionsManager {
      * containing the questions in the system */
     public void DeleteQuestion(User user) throws IOException {
         ArrayList<Integer> askedToMe = user.getQuestionsIdsToMe();
+        int id = checkUserID(askedToMe);
 
+        if (id == -1)
+            return;
+
+        toDelete(id, user);
+        updateDatabase();
+    }
+
+    /** A method to ask a question to a user in the system
+     * First, we ask the user to enter the id of the user he wants to ask
+     * and check if the user exists or not */
+    public void AskQuestion() {
+        //todo:
+    }
+
+    /** A helper method to request an id from the user and check if it exists
+     * and return it */
+    private int checkUserID(ArrayList<Integer> IdList) {
         Scanner scan = new Scanner(System.in);
         int id;
         while (true) {
@@ -150,16 +154,15 @@ public class QuestionsManager {
             scan.nextLine();
 
             if (id == -1)
-                return;
+                break;
             else if (!quesIdToQuesObject.containsKey(id))
                 System.out.println("Id isn't found. Try again...");
-            else if (!askedToMe.contains(id))
+            else if (!IdList.contains(id))
                 System.out.println("You don't have this Id. Try again...");
             else
                 break;
         }
-        toDelete(id, user);
-        updateDatabase();
+        return id;
     }
 
     /** A method to update the file with the new changes */
